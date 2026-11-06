@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { useState } from "react";
 import Link from "next/link";
@@ -20,11 +20,6 @@ export default function SignupPage() {
 
     if (!name || !email || !password) {
       setError("Please complete all fields.");
-      return;
-    }
-
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
       return;
     }
 
@@ -78,7 +73,7 @@ export default function SignupPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              placeholder="ken@allmart.com"
               className="w-full rounded-lg border px-4 py-3 outline-none focus:border-blue-600"
             />
           </div>
@@ -92,7 +87,7 @@ export default function SignupPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Create a password"
+              placeholder="**********"
               className="w-full rounded-lg border px-4 py-3 outline-none focus:border-blue-600"
             />
           </div>

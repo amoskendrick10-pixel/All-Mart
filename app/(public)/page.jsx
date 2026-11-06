@@ -74,7 +74,7 @@ export default function HomePage() {
 
           <input
             type="text"
-            placeholder="Search for products or vendors..."
+            placeholder="Search for products, brands and categories"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full bg-transparent text-gray-800 outline-none"

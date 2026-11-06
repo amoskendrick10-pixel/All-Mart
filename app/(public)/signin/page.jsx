@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { useState } from "react";
 import Link from "next/link";
@@ -58,7 +58,7 @@ export default function SigninPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              placeholder="ken@allmart.com"
               className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-600"
             />
           </div>
@@ -72,7 +72,7 @@ export default function SigninPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
+              placeholder="**********"
               className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-600"
             />
           </div>
