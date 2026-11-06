@@ -13,10 +13,9 @@ export default function Footer() {
         </h2>
 
         <p className="text-gray-400 mt-3">
-
           Everything you need, all in one place.
-
         </p>
+
 
         <div className="border-t border-gray-800 mt-8 pt-6">
 

@@ -2,12 +2,8 @@
 
 import Link from "next/link";
 
-import {
-  ShoppingBag,
-  UserRound,
-  LogOut
-} from "lucide-react";
-
+import {ShoppingBag, LogOut, ShoppingCart} from "lucide-react";
+  
 import { useAuth } from "@/context/AuthContext";
 
 import { useCart } from "@/context/CartContext";
@@ -24,8 +20,6 @@ export default function Navbar() {
 
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
 
-        {/* LOGO */}
-
         <Link
           href="/"
           className="text-2xl font-black text-gray-900"
@@ -34,8 +28,6 @@ export default function Navbar() {
           All<span className="text-blue-600">Mart</span>
 
         </Link>
-
-        {/* NAVIGATION */}
 
         <div className="hidden md:flex items-center gap-8">
 
@@ -53,8 +45,6 @@ export default function Navbar() {
 
         </div>
 
-        {/* ACTIONS */}
-
         <div className="flex items-center gap-4">
 
           <Link
@@ -62,7 +52,7 @@ export default function Navbar() {
             className="relative p-2 bg-gray-100 rounded-xl"
           >
 
-            <ShoppingBag size={22} />
+            <ShoppingCart size={22} />
 
             <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
 
@@ -97,8 +87,6 @@ export default function Navbar() {
               href="/signin"
               className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-xl"
             >
-
-              <UserRound size={18} />
 
               Sign In
 
