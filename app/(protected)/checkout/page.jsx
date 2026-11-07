@@ -1,129 +1,265 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
+import { formatPrice } from "@/constants/mockData";
+import { ArrowLeft, ShoppingBag } from "lucide-react";
 
-export default function SignupPage() {
-  const { signup } = useAuth();
+export default function CheckoutPage() {
   const router = useRouter();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const { cart, clearCart } = useCart();
+  const { user } = useAuth();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setError("");
+  const shippingFee = 2500;
 
-    if (!name || !email || !password) {
-      setError("Please complete all fields.");
-      return;
-    }
+  const subtotal = cart.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
-      return;
-    }
+  const total = subtotal + shippingFee;
 
-    const success = signup(name, email, password);
+  const [shipping, setShipping] = useState({
+    fullName: user?.name || "",
+    email: user?.email || "",
+    phone: "",
+    address: "",
+    city: "",
+    state: "",
+  });
 
-    if (!success) {
-      setError("An account with this email already exists.");
-      return;
-    }
+  const [loading, setLoading] = useState(false);
 
-    router.push("/");
+  const handleChange = (e) => {
+    setShipping({
+      ...shipping,
+      [e.target.name]: e.target.value,
+    });
   };
 
+  const handleCheckout = (e) => {
+    e.preventDefault();
+
+    if (cart.length === 0) {
+      alert("Your cart is empty.");
+      return;
+    }
+
+    setLoading(true);
+
+    // Simulated payment
+    setTimeout(() => {
+      const order = {
+        id: `ORD-${Date.now()}`,
+        userId: user.id,
+        items: cart,
+        subtotal,
+        shippingFee,
+        total,
+        shipping,
+        status: "Processing",
+        date: new Date().toISOString(),
+      };
+
+      const existingOrders = JSON.parse(
+        localStorage.getItem("allmart_orders") || "[]"
+      );
+
+      localStorage.setItem(
+        "allmart_orders",
+        JSON.stringify([...existingOrders, order])
+      );
+
+      clearCart();
+
+      router.push(`/tracking?orderId=${order.id}`);
+    }, 1500);
+  };
+
+  if (cart.length === 0) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center bg-gray-50">
+        <ShoppingBag size={60} className="text-gray-300" />
+
+        <h1 className="mt-5 text-2xl font-bold">
+          Your cart is empty
+        </h1>
+
+        <Link
+          href="/"
+          className="mt-5 rounded-lg bg-blue-600 px-6 py-3 text-white"
+        >
+          Continue Shopping
+        </Link>
+      </main>
+    );
+  }
+
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-50 px-6 py-12">
+    <main className="min-h-screen bg-gray-50 px-4 py-10">
+      <div className="mx-auto max-w-7xl">
 
-      <div className="w-full max-w-md rounded-2xl border bg-white p-8 shadow-sm">
+        <Link
+          href="/cart"
+          className="mb-8 inline-flex items-center gap-2 text-gray-600 hover:text-blue-600"
+        >
+          <ArrowLeft size={18} />
+          Back to Cart
+        </Link>
 
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Create Account
-          </h1>
+        <h1 className="mb-8 text-3xl font-bold text-gray-900">
+          Checkout
+        </h1>
 
-          <p className="mt-2 text-gray-500">
-            Join AllMart and start shopping.
-          </p>
-        </div>
+        <form
+          onSubmit={handleCheckout}
+          className="grid gap-8 lg:grid-cols-3"
+        >
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* DELIVERY INFORMATION */}
 
-          <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
-              Full Name
-            </label>
+          <section className="rounded-2xl bg-white p-6 shadow-sm lg:col-span-2">
 
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your full name"
-              className="w-full rounded-lg border px-4 py-3 outline-none focus:border-blue-600"
-            />
-          </div>
+            <h2 className="mb-6 text-xl font-bold">
+              Delivery Information
+            </h2>
 
-          <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
-              Email Address
-            </label>
+            <div className="grid gap-5 sm:grid-cols-2">
 
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="w-full rounded-lg border px-4 py-3 outline-none focus:border-blue-600"
-            />
-          </div>
+              {[
+                {
+                  name: "fullName",
+                  label: "Full Name",
+                  type: "text",
+                },
+                {
+                  name: "email",
+                  label: "Email Address",
+                  type: "email",
+                },
+                {
+                  name: "phone",
+                  label: "Phone Number",
+                  type: "tel",
+                },
+                {
+                  name: "city",
+                  label: "City",
+                  type: "text",
+                },
+                {
+                  name: "state",
+                  label: "State",
+                  type: "text",
+                },
+              ].map((field) => (
+                <div key={field.name}>
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                    {field.label}
+                  </label>
 
-          <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
-              Password
-            </label>
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    value={shipping[field.name]}
+                    onChange={handleChange}
+                    required
+                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
+                  />
+                </div>
+              ))}
 
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Create a password"
-              className="w-full rounded-lg border px-4 py-3 outline-none focus:border-blue-600"
-            />
-          </div>
+              <div className="sm:col-span-2">
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Delivery Address
+                </label>
 
-          {error && (
-            <p className="text-sm text-red-600">
-              {error}
+                <textarea
+                  name="address"
+                  value={shipping.address}
+                  onChange={handleChange}
+                  required
+                  rows="4"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
+                  placeholder="Enter your complete delivery address"
+                />
+              </div>
+
+            </div>
+
+          </section>
+
+          {/* ORDER SUMMARY */}
+
+          <aside className="h-fit rounded-2xl bg-white p-6 shadow-sm">
+
+            <h2 className="mb-6 text-xl font-bold">
+              Order Summary
+            </h2>
+
+            <div className="space-y-5">
+              {cart.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex justify-between gap-4"
+                >
+                  <div>
+                    <h3 className="font-semibold text-gray-800">
+                      {item.name}
+                    </h3>
+
+                    <p className="text-sm text-gray-500">
+                      Quantity: {item.quantity}
+                    </p>
+                  </div>
+
+                  <p className="font-semibold">
+                    {formatPrice(item.price * item.quantity)}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 space-y-4 border-t pt-5">
+
+              <div className="flex justify-between text-gray-600">
+                <span>Subtotal</span>
+                <span>{formatPrice(subtotal)}</span>
+              </div>
+
+              <div className="flex justify-between text-gray-600">
+                <span>Shipping Fee</span>
+                <span>{formatPrice(shippingFee)}</span>
+              </div>
+
+              <div className="flex justify-between border-t pt-4 text-lg font-bold">
+                <span>Total</span>
+                <span>{formatPrice(total)}</span>
+              </div>
+
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="mt-7 w-full rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {loading ? "Processing..." : "Complete Order"}
+            </button>
+
+            <p className="mt-4 text-center text-xs text-gray-500">
+              Demo checkout only. No real payment is made.
             </p>
-          )}
 
-          <button
-            type="submit"
-            className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white hover:bg-blue-700"
-          >
-            Create Account
-          </button>
+          </aside>
 
         </form>
 
-        <p className="mt-6 text-center text-sm text-gray-600">
-          Already have an account?{" "}
-          <Link
-            href="/signin"
-            className="font-semibold text-blue-600 hover:underline"
-          >
-            Sign In
-          </Link>
-        </p>
-
       </div>
-
     </main>
   );
 }

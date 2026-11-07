@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import {ShoppingBag, LogOut, ShoppingCart} from "lucide-react";
+import {LogOut, ShoppingCart} from "lucide-react";
   
 import { useAuth } from "@/context/AuthContext";
 
@@ -47,19 +47,14 @@ export default function Navbar() {
 
         <div className="flex items-center gap-4">
 
-          <Link
-            href="/cart"
-            className="relative p-2 bg-gray-100 rounded-xl"
-          >
+          <Link href="/cart" className="relative">
+  <ShoppingCart size={24} />
 
-            <ShoppingCart size={22} />
-
-            <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-
+          {itemCount > 0 && (
+            <span className="absolute -right-2 -top-2 rounded-full bg-blue-500 px-2 py-1 text-xs text-white">
               {itemCount}
-
             </span>
-
+          )}
           </Link>
 
           {user ? (
@@ -72,11 +67,11 @@ export default function Navbar() {
 
               <button
                 onClick={logout}
-                className="p-2 rounded-xl border"
+                className="p-2 rounded-xl border bg-red-600 text-white"
               >
-
+                Logout
                 <LogOut size={18} />
-
+                
               </button>
 
             </div>

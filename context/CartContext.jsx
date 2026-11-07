@@ -1,140 +1,118 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, addToCart, increaseQuantity, decreaseQuantity, removeFromCart, subtotal, cart, clearCart, itemCount } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 
 const CartContext = createContext(null);
 
 export const CartProvider = ({ children }) => {
-
   const [cart, setCart] = useState([]);
-
   const [ready, setReady] = useState(false);
 
-  // LOAD CART
-
+  // LOAD CART FROM LOCAL STORAGE
   useEffect(() => {
-
     const savedCart = JSON.parse(
       localStorage.getItem("allmart_cart") || "[]"
     );
 
     setCart(savedCart);
-
     setReady(true);
-
   }, []);
 
-  // SAVE CART
-
+  // SAVE CART TO LOCAL STORAGE
   useEffect(() => {
-
     if (ready) {
       localStorage.setItem(
         "allmart_cart",
         JSON.stringify(cart)
       );
     }
-
   }, [cart, ready]);
 
   // ADD TO CART
-
-  const addToCart = (product, vendor) => {
-
+  const addToCart = (product) => {
     setCart((currentCart) => {
-
       const existingItem = currentCart.find(
-        (item) => item.id === product.id
+        (item) =>
+          item.id === product.id &&
+          item.vendorId === product.vendorId
       );
 
       if (existingItem) {
-
         return currentCart.map((item) =>
-          item.id === product.id
+          item.id === product.id &&
+          item.vendorId === product.vendorId
             ? {
                 ...item,
-                quantity: item.quantity + 1
+                quantity: item.quantity + 1,
               }
             : item
         );
-
       }
 
       return [
         ...currentCart,
         {
           ...product,
-          vendorId: vendor.id,
-          vendorName: vendor.name,
-          quantity: 1
-        }
+          quantity: 1,
+        },
       ];
-
     });
-
   };
 
   // INCREASE QUANTITY
-
-  const increase = (id) => {
-
+  const increaseQuantity = (id) => {
     setCart((items) =>
       items.map((item) =>
         item.id === id
           ? {
               ...item,
-              quantity: item.quantity + 1
+              quantity: item.quantity + 1,
             }
           : item
       )
     );
-
   };
 
   // DECREASE QUANTITY
-
-  const decrease = (id) => {
-
+  const decreaseQuantity = (id) => {
     setCart((items) =>
       items
         .map((item) =>
           item.id === id
             ? {
                 ...item,
-                quantity: item.quantity - 1
+                quantity: item.quantity - 1,
               }
             : item
         )
         .filter((item) => item.quantity > 0)
     );
-
   };
 
   // REMOVE ITEM
-
-  const remove = (id) => {
-
+  const removeFromCart = (id) => {
     setCart((items) =>
       items.filter((item) => item.id !== id)
     );
-
   };
 
   // CLEAR CART
-
   const clearCart = () => {
     setCart([]);
   };
 
   // TOTAL ITEMS
-
   const itemCount = cart.reduce(
     (total, item) => total + item.quantity,
     0
   );
 
   // SUBTOTAL
-
   const subtotal = cart.reduce(
     (total, item) =>
       total + item.price * item.quantity,
@@ -142,32 +120,25 @@ export const CartProvider = ({ children }) => {
   );
 
   return (
-
     <CartContext.Provider
       value={{
         cart,
         addToCart,
-        increase,
-        decrease,
-        remove,
+        increaseQuantity,
+        decreaseQuantity,
+        removeFromCart,
         clearCart,
         itemCount,
-        subtotal
+        subtotal,
       }}
     >
-
       {children}
-
     </CartContext.Provider>
-
   );
-
 };
 
 // CUSTOM HOOK
-
 export const useCart = () => {
-
   const context = useContext(CartContext);
 
   if (!context) {
@@ -177,5 +148,4 @@ export const useCart = () => {
   }
 
   return context;
-
 };

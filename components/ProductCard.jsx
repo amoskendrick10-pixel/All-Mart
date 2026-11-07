@@ -1,37 +1,109 @@
-export default function Footer() {
+"use client";
+
+import { ShoppingCart, Heart } from "lucide-react";
+import { useState } from "react";
+import { formatPrice } from "@/constants/mockData";
+import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+
+export default function ProductCard({ product, vendor }) {
+  const { addToCart } = useCart();
+  const { user } = useAuth();
+  const router = useRouter();
+
+  const [saved, setSaved] = useState(false);
+
+  const handleAddToCart = () => {
+    addToCart({
+      ...product,
+      vendorId: vendor.id,
+      vendorName: vendor.name,
+    });
+  };
+
+  const handleWishlist = () => {
+    if (!user) {
+      router.push("/signin");
+      return;
+    }
+
+    const wishlist = JSON.parse(
+      localStorage.getItem("allmart_wishlist") || "{}"
+    );
+
+    const userWishlist = wishlist[user.id] || [];
+
+    const exists = userWishlist.some(
+      (item) => item.id === product.id
+    );
+
+    const updatedWishlist = exists
+      ? userWishlist.filter((item) => item.id !== product.id)
+      : [...userWishlist, { ...product, vendor }];
+
+    wishlist[user.id] = updatedWishlist;
+
+    localStorage.setItem(
+      "allmart_wishlist",
+      JSON.stringify(wishlist)
+    );
+
+    setSaved(!exists);
+  };
 
   return (
+    <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
 
-    <footer className="bg-gray-950 text-white mt-20">
+      <div className="relative">
+        <Image
+          src={product.image}
+          alt={product.name}
+          width={600}
+          height={600}
+          className="h-52 w-full object-cover"
+        />
 
-      <div className="max-w-7xl mx-auto px-4 py-10">
-
-        <h2 className="text-2xl font-black">
-
-          All<span className="text-blue-500">Mart</span>
-
-        </h2>
-
-        <p className="text-gray-400 mt-3">
-
-          Everything you need, all in one place.
-
-        </p>
-
-        <div className="border-t border-gray-800 mt-8 pt-6">
-
-          <p className="text-sm text-gray-500 text-center">
-
-            © {new Date().getFullYear()} AllMart. All rights reserved.
-
-          </p>
-
-        </div>
-
+        <button
+          onClick={handleWishlist}
+          className="absolute right-3 top-3 rounded-full bg-white p-2 shadow"
+          aria-label="Toggle wishlist"
+        >
+          <Heart
+            size={20}
+            className={saved ? "fill-red-500 text-red-500" : "text-gray-500"}
+          />
+        </button>
       </div>
 
-    </footer>
+      <div className="p-5">
 
+        <p className="text-sm text-blue-600">
+          {vendor?.name}
+        </p>
+
+        <h3 className="mt-2 font-bold text-gray-900">
+          {product.name}
+        </h3>
+
+        <p className="mt-2 text-lg font-bold text-gray-900">
+          {formatPrice(product.price)}
+        </p>
+
+        <p className="mt-2 line-clamp-2 text-sm text-gray-500">
+          {product.description}
+        </p>
+
+        <button
+          onClick={handleAddToCart}
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700"
+        >
+          <ShoppingCart size={18} />
+          Add to Cart
+        </button>
+
+      </div>
+    </div>
   );
-
 }
