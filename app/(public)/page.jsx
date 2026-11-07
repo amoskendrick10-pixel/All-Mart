@@ -91,20 +91,14 @@ export default function HomePage() {
         </h2>
 
         <div className="flex flex-wrap gap-3">
-
-          {["All", ...categories].map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`rounded-full px-5 py-2 text-sm font-medium transition ${
-                selectedCategory === category
-                  ? "bg-blue-600 text-white"
-                  : "bg-white text-gray-600 hover:bg-gray-200"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
+        {categories.map((category) => (
+          <button
+            key={category}
+            onClick={() => setSelectedCategory(category)}
+          >
+            {category}
+          </button>
+        ))}
 
         </div>
       </section>

@@ -1,100 +1,111 @@
 "use client";
 
 import Link from "next/link";
-
-import {LogOut, ShoppingCart} from "lucide-react";
-  
+import {LogOut, ShoppingCart, Heart, Package, UserPlus} from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-
 import { useCart } from "@/context/CartContext";
 
 export default function Navbar() {
-
   const { user, logout } = useAuth();
-
   const { itemCount } = useCart();
 
   return (
+    <nav className="sticky top-0 z-50 border-b border-gray-200 bg-white">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
 
-    <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
-
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-
+        {/* LOGO */}
         <Link
           href="/"
           className="text-2xl font-black text-gray-900"
         >
-
           All<span className="text-blue-600">Mart</span>
-
         </Link>
 
-        <div className="hidden md:flex items-center gap-8">
+        {/* DESKTOP NAVIGATION */}
+        <div className="hidden items-center gap-8 md:flex">
 
-          <Link href="/" className="text-gray-600 hover:text-blue-600">
+          <Link
+            href="/"
+            className="text-gray-600 transition hover:text-blue-600"
+          >
             Home
           </Link>
 
-          <Link href="/history" className="text-gray-600 hover:text-blue-600">
+          <Link
+            href="/history"
+            className="flex items-center gap-2 text-gray-600 transition hover:text-blue-600"
+          >
             My Orders
           </Link>
 
-          <Link href="/wishlist" className="text-gray-600 hover:text-blue-600">
+          <Link
+            href="/wishlist"
+            className="flex items-center gap-2 text-gray-600 transition hover:text-blue-600"
+          >
             Wishlist
           </Link>
 
         </div>
 
+        {/* RIGHT NAVIGATION */}
         <div className="flex items-center gap-4">
 
-          <Link href="/cart" className="relative">
-  <ShoppingCart size={24} />
+          {/* CART */}
+          <Link
+            href="/cart"
+            className="relative rounded-xl p-2 text-gray-700 transition hover:bg-gray-100"
+            aria-label="Shopping cart"
+          >
+            <ShoppingCart size={24} />
 
-          {itemCount > 0 && (
-            <span className="absolute -right-2 -top-2 rounded-full bg-blue-500 px-2 py-1 text-xs text-white">
-              {itemCount}
-            </span>
-          )}
+            {itemCount > 0 && (
+              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-blue-600 px-1 text-xs font-bold text-white">
+                {itemCount}
+              </span>
+            )}
           </Link>
 
+          {/* AUTHENTICATION */}
           {user ? (
+            <div className="flex items-center gap-3">
 
-            <div className="flex items-center gap-2">
-
-              <span className="hidden sm:block font-medium text-sm">
-                Hi, {user.name.split(" ")[0]}
+              <span className="hidden text-sm font-medium text-gray-700 sm:block">
+                Hi, {user.name?.split(" ")[0] || "User"}
               </span>
 
               <button
                 onClick={logout}
-                className="p-2 rounded-xl border bg-red-600 text-white"
+                className="flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700"
               >
+                <LogOut size={17} />
                 Logout
-                <LogOut size={18} />
-                
               </button>
 
             </div>
-
           ) : (
+            <div className="flex items-center gap-2">
 
-            <Link
-              href="/signin"
-              className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-xl"
-            >
+              <Link
+                href="/signin"
+                className="rounded-xl px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
+              >
+                Sign In
+              </Link>
 
-              Sign In
+              <Link
+                href="/signup"
+                className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+              >
+                <UserPlus size={17} />
+                Sign Up
+              </Link>
 
-            </Link>
-
+            </div>
           )}
 
         </div>
 
       </div>
-
     </nav>
-
   );
-
 }

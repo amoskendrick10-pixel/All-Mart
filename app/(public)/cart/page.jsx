@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ShoppingCart, Plus, Minus, Trash2, ArrowLeft } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/constants/mockData";
-import Image from "next/image";
+
 
 export default function CartPage() {
   const {
@@ -67,7 +67,7 @@ export default function CartPage() {
                 key={item.id}
                 className="flex flex-col gap-5 rounded-2xl border bg-white p-5 sm:flex-row"
               >
-                <Image
+                <img
                   src={item.image}
                   alt={item.name}
                   className="h-36 w-full rounded-xl object-cover sm:w-36"
