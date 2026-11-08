@@ -5,7 +5,6 @@ import { ShoppingCart, Plus, Minus, Trash2, ArrowLeft } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/constants/mockData";
 
-
 export default function CartPage() {
   const {
     cart,

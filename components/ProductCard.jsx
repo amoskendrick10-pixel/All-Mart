@@ -6,6 +6,7 @@ import { formatPrice } from "@/constants/mockData";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 
 export default function ProductCard({ product, vendor }) {
@@ -57,7 +58,7 @@ export default function ProductCard({ product, vendor }) {
     <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
 
       <div className="relative">
-        <img
+        <Image
           src={product.image}
           alt={product.name}
           width={600}
