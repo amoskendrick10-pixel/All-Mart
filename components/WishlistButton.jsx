@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function WishlistButton({ product }) {
   const { user } = useAuth();
@@ -24,8 +25,7 @@ export default function WishlistButton({ product }) {
 
   const toggleWishlist = () => {
     if (!user) {
-      window.location.href = "/signin";
-      return;
+      useRouter.push('/signin')
     }
 
     const wishlist = JSON.parse(
