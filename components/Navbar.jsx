@@ -13,15 +13,15 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 border-b border-gray-200 bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
 
-        {/* LOGO */}
+
         <Link
           href="/"
-          className="text-2xl font-black text-gray-900"
+          className="text-2xl font-black text-black-900"
         >
-          All<span className="text-blue-600">Mart</span>
+          AllMart
         </Link>
 
-        {/* DESKTOP NAVIGATION */}
+
         <div className="hidden items-center gap-8 md:flex">
 
           <Link
@@ -47,10 +47,10 @@ export default function Navbar() {
 
         </div>
 
-        {/* RIGHT NAVIGATION */}
+
         <div className="flex items-center gap-4">
 
-          {/* CART */}
+
           <Link
             href="/cart"
             className="relative rounded-xl p-2 text-gray-700 transition hover:bg-gray-100"
@@ -65,7 +65,7 @@ export default function Navbar() {
             )}
           </Link>
 
-          {/* AUTHENTICATION */}
+
           {user ? (
             <div className="flex items-center gap-3">
 
@@ -77,8 +77,8 @@ export default function Navbar() {
                 onClick={logout}
                 className="flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700"
               >
-                <LogOut size={17} />
                 Logout
+                <LogOut size={17} />
               </button>
 
             </div>
@@ -96,7 +96,6 @@ export default function Navbar() {
                 href="/signup"
                 className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
               >
-                <UserPlus size={17} />
                 Sign Up
               </Link>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingCart, Heart } from "lucide-react";
+import { ShoppingCartPlus, Heart } from "lucide-react";
 import { useState } from "react";
 import { formatPrice } from "@/constants/mockData";
 import { useCart } from "@/context/CartContext";
@@ -55,7 +55,7 @@ export default function ProductCard({ product, vendor }) {
   };
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+    <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
 
       <div className="relative">
         <Image
@@ -68,7 +68,7 @@ export default function ProductCard({ product, vendor }) {
 
         <button
           onClick={handleWishlist}
-          className="absolute right-3 top-3 rounded-full bg-white p-2 shadow"
+          className="absolute right-3 bottom--4 rounded-full p-2"
           aria-label="Toggle wishlist"
         >
           <Heart
@@ -100,7 +100,7 @@ export default function ProductCard({ product, vendor }) {
           onClick={handleAddToCart}
           className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700"
         >
-          <ShoppingCart size={18} />
+          <ShoppingCartPlus size={18} />
           Add to Cart
         </button>
 
