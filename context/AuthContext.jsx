@@ -9,7 +9,7 @@ import {
 
 const AuthContext = createContext(null);
 
-export function AuthProvider({ children }) {
+const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -115,8 +115,10 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export function useAuth() {
+const useAuth = () => {
   return useContext(AuthContext);
-}
+};
+
+export { AuthProvider, useAuth };

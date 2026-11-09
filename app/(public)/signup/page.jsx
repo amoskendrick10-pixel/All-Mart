@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
-export default function SignupPage() {
+const SignupPage = () => {
   const { signup } = useAuth();
   const router = useRouter();
 
@@ -35,8 +35,7 @@ export default function SignupPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-gray-50 px-6 py-12">
-
-      <div className="w-full max-w-md rounded-2xl border bg-white p-8 shadow-sm">
+      <div className="w-full max-w-md rounded-xl border bg-white p-8">
 
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-gray-900">
@@ -118,7 +117,8 @@ export default function SignupPage() {
         </p>
 
       </div>
-
     </main>
   );
-}
+};
+
+export default SignupPage;

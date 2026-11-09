@@ -2,14 +2,14 @@
 
 import { ShoppingCartPlus, Heart } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { formatPrice } from "@/constants/mockData";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-
-export default function ProductCard({ product, vendor }) {
+const ProductCard = ({ product, vendor }) => {
   const { addToCart } = useCart();
   const { user } = useAuth();
   const router = useRouter();
@@ -55,31 +55,20 @@ export default function ProductCard({ product, vendor }) {
   };
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-
+    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
       <div className="relative">
         <Image
-          src={product.image}
-          alt={product.name}
           width={600}
           height={600}
+          src={product.image}
+          alt={product.name}
           className="h-52 w-full object-cover"
         />
 
-        <button
-          onClick={handleWishlist}
-          className="absolute right-3 bottom--4 rounded-full p-2"
-          aria-label="Toggle wishlist"
-        >
-          <Heart
-            size={20}
-            className={saved ? "fill-red-500 text-red-500" : "text-gray-500"}
-          />
-        </button>
+        
       </div>
 
       <div className="p-5">
-
         <p className="text-sm text-blue-600">
           {vendor?.name}
         </p>
@@ -96,15 +85,33 @@ export default function ProductCard({ product, vendor }) {
           {product.description}
         </p>
 
-        <button
+        <div className="flex flex-row justify-center items-center space-between">
+          <button
           onClick={handleAddToCart}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700"
-        >
-          <ShoppingCartPlus size={18} />
-          Add to Cart
-        </button>
+          className="mt-4 flex items-center justify-center w-full gap-2 rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700"
+          >
+            <ShoppingCartPlus size={18} />
+            Add to Cart
+          </button>
 
+          <button
+            onClick={handleWishlist}
+            className="flex items-end justify-end bg-gray-50 relative"
+            aria-label="Toggle wishlist"
+          >
+            <Heart
+              size={26}
+              className={
+                saved
+                  ? "fill-red-500 text-red-500"
+                  : "text-gray-500"
+              }
+            />
+          </button>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default ProductCard;

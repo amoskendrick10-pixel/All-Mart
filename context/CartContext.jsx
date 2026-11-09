@@ -9,7 +9,7 @@ import {
 
 const CartContext = createContext(null);
 
-export const CartProvider = ({ children }) => {
+const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [ready, setReady] = useState(false);
 
@@ -138,7 +138,7 @@ export const CartProvider = ({ children }) => {
 };
 
 // CUSTOM HOOK
-export const useCart = () => {
+const useCart = () => {
   const context = useContext(CartContext);
 
   if (!context) {
@@ -149,3 +149,5 @@ export const useCart = () => {
 
   return context;
 };
+
+export { CartProvider, useCart };

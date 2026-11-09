@@ -3,10 +3,10 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 
-import { vendors } from "@/data/mockData";
+import { vendors } from "@/constants/mockData";
 import ProductCard from "@/components/ProductCard";
 
-export default function StorePage() {
+const StorePage = () => {
   const params = useParams();
 
   const vendor = vendors.find(
@@ -26,6 +26,7 @@ export default function StorePage() {
   return (
     <main className="min-h-screen bg-gray-50">
 
+      {/* STORE HERO SECTION */}
       <section className="bg-gray-900 px-6 py-16 text-white">
         <div className="mx-auto max-w-7xl">
 
@@ -51,6 +52,7 @@ export default function StorePage() {
         </div>
       </section>
 
+      {/* STORE PRODUCTS */}
       <section className="mx-auto max-w-7xl px-6 py-12">
 
         <h2 className="mb-8 text-2xl font-bold text-gray-900">
@@ -73,4 +75,6 @@ export default function StorePage() {
 
     </main>
   );
-}
+};
+
+export default StorePage;

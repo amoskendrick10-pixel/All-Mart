@@ -6,8 +6,9 @@ import { Trash2 } from "lucide-react";
 
 import { useAuth } from "@/context/AuthContext";
 import { formatPrice } from "@/constants/mockData";
+import Image from "next/image";
 
-export default function WishlistPage() {
+const WishlistPage = () => {
   const { user } = useAuth();
 
   const [wishlist, setWishlist] = useState([]);
@@ -43,17 +44,13 @@ export default function WishlistPage() {
 
   return (
     <main className="min-h-screen bg-gray-50 px-6 py-12">
-
       <div className="mx-auto max-w-6xl">
-
         <h1 className="mb-8 text-3xl font-bold text-gray-900">
           My Wishlist
         </h1>
 
         {wishlist.length === 0 ? (
-
           <div className="rounded-2xl border bg-white p-12 text-center">
-
             <h2 className="text-xl font-bold text-gray-900">
               Your Wishlist is Empty
             </h2>
@@ -68,21 +65,17 @@ export default function WishlistPage() {
             >
               Explore Products
             </Link>
-
           </div>
-
         ) : (
-
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-
             {wishlist.map((product) => (
-
               <div
                 key={product.id}
                 className="rounded-xl border bg-white p-5"
               >
-
-                <img
+                <Image
+                  width={600}
+                  height={600}
                   src={product.image}
                   alt={product.name}
                   className="h-48 w-full rounded-lg object-cover"
@@ -103,17 +96,13 @@ export default function WishlistPage() {
                   <Trash2 size={17} />
                   Remove
                 </button>
-
               </div>
-
             ))}
-
           </div>
-
         )}
-
       </div>
-
     </main>
   );
-}
+};
+
+export default WishlistPage;

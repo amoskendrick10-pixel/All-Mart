@@ -5,12 +5,16 @@ import { Heart } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 
-export default function WishlistButton({ product }) {
+const WishlistButton = ({ product }) => {
   const { user } = useAuth();
+  const router = useRouter();
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    if (!user || !product) return;
+    if (!user || !product) {
+      setSaved(false);
+      return;
+    }
 
     const wishlist = JSON.parse(
       localStorage.getItem("allmart_wishlist") || "{}"
@@ -25,8 +29,11 @@ export default function WishlistButton({ product }) {
 
   const toggleWishlist = () => {
     if (!user) {
-      useRouter.push('/signin')
+      router.push("/signin");
+      return;
     }
+
+    if (!product) return;
 
     const wishlist = JSON.parse(
       localStorage.getItem("allmart_wishlist") || "{}"
@@ -51,7 +58,9 @@ export default function WishlistButton({ product }) {
       JSON.stringify(wishlist)
     );
 
-    setSaved(!saved);
+    setSaved(
+      updatedWishlist.some((item) => item.id === product.id)
+    );
   };
 
   return (
@@ -71,4 +80,6 @@ export default function WishlistButton({ product }) {
       />
     </button>
   );
-}
+};
+
+export default WishlistButton;

@@ -1,11 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingCart, Plus, Minus, Trash2, ArrowLeft } from "lucide-react";
+import {
+  ShoppingCart,
+  Plus,
+  Minus,
+  Trash2,
+  ArrowLeft,
+} from "lucide-react";
+
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/constants/mockData";
+import Image from "next/image";
 
-export default function CartPage() {
+const CartPage = () => {
   const {
     cart,
     increaseQuantity,
@@ -59,14 +67,16 @@ export default function CartPage() {
 
         <div className="grid gap-8 lg:grid-cols-3">
 
-          {/* Cart Items */}
+          {/* CART ITEMS */}
           <section className="space-y-5 lg:col-span-2">
             {cart.map((item) => (
               <div
-                key={item.id}
+                key={`${item.vendorId}-${item.id}`}
                 className="flex flex-col gap-5 rounded-2xl border bg-white p-5 sm:flex-row"
               >
-                <img
+                <Image
+                  width={600}
+                  height={600}
                   src={item.image}
                   alt={item.name}
                   className="h-36 w-full rounded-xl object-cover sm:w-36"
@@ -123,7 +133,7 @@ export default function CartPage() {
             ))}
           </section>
 
-          {/* Order Summary */}
+          {/* ORDER SUMMARY */}
           <aside className="h-fit rounded-2xl border bg-white p-6 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900">
               Order Summary
@@ -162,4 +172,6 @@ export default function CartPage() {
       </div>
     </main>
   );
-}
+};
+
+export default CartPage;

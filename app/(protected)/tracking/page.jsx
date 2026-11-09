@@ -1,21 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { formatPrice } from "@/constants/mockData";
-import {Package, Truck, CheckCircle, Clock, ArrowLeft} from "lucide-react";
-  
+import {
+  Package,
+  Truck,
+  CheckCircle,
+  Clock,
+  ArrowLeft,
+} from "lucide-react";
 
 const statuses = ["Processing", "Shipped", "Delivered"];
 
-export default function TrackingPage() {
+const TrackingPage = () => {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId");
 
   const { user } = useAuth();
-  const router = useRouter();
 
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,8 +32,7 @@ export default function TrackingPage() {
     );
 
     const foundOrder = orders.find(
-      (item) =>
-        item.id === orderId && item.userId === user.id
+      (item) => item.id === orderId && item.userId === user.id
     );
 
     setOrder(foundOrder || null);
@@ -78,7 +81,6 @@ export default function TrackingPage() {
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-10">
       <div className="mx-auto max-w-4xl">
-
         <Link
           href="/history"
           className="mb-8 inline-flex items-center gap-2 text-gray-600 hover:text-blue-600"
@@ -88,7 +90,6 @@ export default function TrackingPage() {
         </Link>
 
         <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
-
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
@@ -191,9 +192,10 @@ export default function TrackingPage() {
               <span>{formatPrice(order.total)}</span>
             </div>
           </section>
-
         </div>
       </div>
     </main>
   );
-}
+};
+
+export default TrackingPage;

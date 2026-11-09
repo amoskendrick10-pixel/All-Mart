@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
-export default function SigninPage() {
+const SigninPage = () => {
   const router = useRouter();
   const { login } = useAuth();
 
@@ -25,7 +25,7 @@ export default function SigninPage() {
     const result = login(email, password);
 
     if (result === false) {
-      setError("Invalid email or password.");
+      setError("Invalid credentials");
       return;
     }
 
@@ -34,7 +34,6 @@ export default function SigninPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-gray-50 px-6 py-12">
-
       <div className="w-full max-w-md rounded-2xl border bg-white p-8 shadow-sm">
 
         <div className="mb-8 text-center">
@@ -103,7 +102,8 @@ export default function SigninPage() {
         </p>
 
       </div>
-
     </main>
   );
-}
+};
+
+export default SigninPage;

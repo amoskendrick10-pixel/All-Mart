@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { formatPrice } from "@/constants/mockData";
 
-export default function HistoryPage() {
+const HistoryPage = () => {
   const { user } = useAuth();
 
   const [orders, setOrders] = useState([]);
@@ -27,17 +27,13 @@ export default function HistoryPage() {
 
   return (
     <main className="min-h-screen bg-gray-50 px-6 py-12">
-
       <div className="mx-auto max-w-5xl">
-
         <h1 className="mb-8 text-3xl font-bold text-gray-900">
           My Orders
         </h1>
 
         {orders.length === 0 ? (
-
           <div className="rounded-2xl border bg-white p-12 text-center">
-
             <h2 className="text-xl font-bold text-gray-900">
               No Orders Yet
             </h2>
@@ -52,22 +48,15 @@ export default function HistoryPage() {
             >
               Start Shopping
             </Link>
-
           </div>
-
         ) : (
-
           <div className="space-y-5">
-
             {orders.map((order) => (
-
               <div
                 key={order.id}
                 className="rounded-xl border bg-white p-6 shadow-sm"
               >
-
                 <div className="flex flex-wrap justify-between gap-4">
-
                   <div>
                     <p className="text-sm text-gray-500">
                       Order ID
@@ -97,11 +86,9 @@ export default function HistoryPage() {
                       {order.status}
                     </span>
                   </div>
-
                 </div>
 
                 <div className="mt-5 flex flex-wrap items-center justify-between gap-4 border-t pt-5">
-
                   <p className="font-bold text-gray-900">
                     {formatPrice(order.total)}
                   </p>
@@ -112,19 +99,14 @@ export default function HistoryPage() {
                   >
                     Track Order
                   </Link>
-
                 </div>
-
               </div>
-
             ))}
-
           </div>
-
         )}
-
       </div>
-
     </main>
   );
-}
+};
+
+export default HistoryPage;

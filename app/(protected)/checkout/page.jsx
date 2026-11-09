@@ -8,7 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 import { formatPrice } from "@/constants/mockData";
 import { ArrowLeft, ShoppingBag } from "lucide-react";
 
-export default function CheckoutPage() {
+const CheckoutPage = () => {
   const router = useRouter();
 
   const { cart, clearCart } = useCart();
@@ -204,7 +204,7 @@ export default function CheckoutPage() {
             <div className="space-y-5">
               {cart.map((item) => (
                 <div
-                  key={item.id}
+                  key={`${item.vendorId}-${item.id}`}
                   className="flex justify-between gap-4"
                 >
                   <div>
@@ -250,11 +250,6 @@ export default function CheckoutPage() {
             >
               {loading ? "Processing..." : "Complete Order"}
             </button>
-
-            <p className="mt-4 text-center text-xs text-gray-500">
-              Demo checkout only. No real payment is made.
-            </p>
-
           </aside>
 
         </form>
@@ -262,4 +257,6 @@ export default function CheckoutPage() {
       </div>
     </main>
   );
-}
+};
+
+export default CheckoutPage;

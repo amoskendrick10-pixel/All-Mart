@@ -1,9 +1,11 @@
 import ProtectedRoute from "@/components/ProtectedRoute";
 
-export default function ProtectedLayout({ children }) {
+const ProtectedLayout = ({ children }) => {
   return (
     <ProtectedRoute>
       {children}
     </ProtectedRoute>
   );
-}
+};
+
+export default ProtectedLayout;
