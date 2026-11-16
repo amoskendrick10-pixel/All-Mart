@@ -1,10 +1,10 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import Link from "next/link";
 
 import { vendors } from "@/constants/mockData";
-import ProductCard from "@/components/ProductCard";
+import StoreBanner from "@/components/StoreBanner";
+import ProductGrid from "@/components/ProductGrid";
 
 const StorePage = () => {
   const params = useParams();
@@ -25,54 +25,9 @@ const StorePage = () => {
 
   return (
     <main className="min-h-screen bg-gray-50">
+      <StoreBanner vendor={vendor} />
 
-      {/* STORE HERO SECTION */}
-      <section className="bg-gray-900 px-6 py-16 text-white">
-        <div className="mx-auto max-w-7xl">
-
-          <Link
-            href="/"
-            className="text-sm text-blue-400 hover:underline"
-          >
-            ← Back to Home
-          </Link>
-
-          <p className="mt-8 text-sm font-semibold text-blue-400">
-            {vendor.category}
-          </p>
-
-          <h1 className="mt-3 text-4xl font-bold">
-            {vendor.name}
-          </h1>
-
-          <p className="mt-4 max-w-xl text-gray-300">
-            {vendor.description}
-          </p>
-
-        </div>
-      </section>
-
-      {/* STORE PRODUCTS */}
-      <section className="mx-auto max-w-7xl px-6 py-12">
-
-        <h2 className="mb-8 text-2xl font-bold text-gray-900">
-          Products from {vendor.name}
-        </h2>
-
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-
-          {vendor.products.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              vendor={vendor}
-            />
-          ))}
-
-        </div>
-
-      </section>
-
+      <ProductGrid vendor={vendor} />
     </main>
   );
 };

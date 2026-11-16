@@ -5,9 +5,10 @@ import { Heart } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 
-const WishlistButton = ({ product }) => {
+const FavoriteButton = ({ product }) => {
   const { user } = useAuth();
   const router = useRouter();
+
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
@@ -17,7 +18,7 @@ const WishlistButton = ({ product }) => {
     }
 
     const wishlist = JSON.parse(
-      localStorage.getItem("allmart_wishlist") || "{}"
+      localStorage.getItem("allmart_favorites") || "{}"
     );
 
     const userWishlist = wishlist[user.id] || [];
@@ -36,7 +37,7 @@ const WishlistButton = ({ product }) => {
     if (!product) return;
 
     const wishlist = JSON.parse(
-      localStorage.getItem("allmart_wishlist") || "{}"
+      localStorage.getItem("allmart_favorites") || "{}"
     );
 
     const userWishlist = wishlist[user.id] || [];
@@ -54,7 +55,7 @@ const WishlistButton = ({ product }) => {
     wishlist[user.id] = updatedWishlist;
 
     localStorage.setItem(
-      "allmart_wishlist",
+      "allmart_favorites",
       JSON.stringify(wishlist)
     );
 
@@ -68,7 +69,8 @@ const WishlistButton = ({ product }) => {
       type="button"
       onClick={toggleWishlist}
       aria-label={saved ? "Remove from wishlist" : "Add to wishlist"}
-      className="flex h-10 w-10 items-center justify-center rounded-full border bg-white transition hover:bg-gray-100"
+      aria-pressed={saved}
+      className="flex h-10 w-10 items-center justify-center"
     >
       <Heart
         size={20}
@@ -82,4 +84,4 @@ const WishlistButton = ({ product }) => {
   );
 };
 
-export default WishlistButton;
+export default FavoriteButton;

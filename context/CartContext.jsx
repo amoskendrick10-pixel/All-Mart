@@ -1,19 +1,15 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-} from "react";
-
+import { createContext, useContext, useState, useEffect } from "react";
+  
+  
 const CartContext = createContext(null);
 
 const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [ready, setReady] = useState(false);
 
-  // LOAD CART FROM LOCAL STORAGE
+
   useEffect(() => {
     const savedCart = JSON.parse(
       localStorage.getItem("allmart_cart") || "[]"
@@ -23,7 +19,7 @@ const CartProvider = ({ children }) => {
     setReady(true);
   }, []);
 
-  // SAVE CART TO LOCAL STORAGE
+
   useEffect(() => {
     if (ready) {
       localStorage.setItem(
@@ -33,7 +29,7 @@ const CartProvider = ({ children }) => {
     }
   }, [cart, ready]);
 
-  // ADD TO CART
+
   const addToCart = (product) => {
     setCart((currentCart) => {
       const existingItem = currentCart.find(
@@ -64,7 +60,7 @@ const CartProvider = ({ children }) => {
     });
   };
 
-  // INCREASE QUANTITY
+
   const increaseQuantity = (id) => {
     setCart((items) =>
       items.map((item) =>
@@ -78,7 +74,7 @@ const CartProvider = ({ children }) => {
     );
   };
 
-  // DECREASE QUANTITY
+
   const decreaseQuantity = (id) => {
     setCart((items) =>
       items
@@ -94,25 +90,25 @@ const CartProvider = ({ children }) => {
     );
   };
 
-  // REMOVE ITEM
+
   const removeFromCart = (id) => {
     setCart((items) =>
       items.filter((item) => item.id !== id)
     );
   };
 
-  // CLEAR CART
+
   const clearCart = () => {
     setCart([]);
   };
 
-  // TOTAL ITEMS
+
   const itemCount = cart.reduce(
     (total, item) => total + item.quantity,
     0
   );
 
-  // SUBTOTAL
+
   const subtotal = cart.reduce(
     (total, item) =>
       total + item.price * item.quantity,

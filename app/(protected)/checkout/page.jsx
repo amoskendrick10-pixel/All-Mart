@@ -7,12 +7,17 @@ import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { formatPrice } from "@/constants/mockData";
 import { ArrowLeft, ShoppingBag } from "lucide-react";
+import DeliveryDetailsForm from "@/components/DeliveryDetailsForm";
+import OrderSummary from "@/components/OrderSummary";
+import PaymentSelector from "@/components/PaymentSelector";
+import DummyCardInput from "@/components/DummyCardInput";
 
 const CheckoutPage = () => {
   const router = useRouter();
 
   const { cart, clearCart } = useCart();
   const { user } = useAuth();
+  const [paymentMethod, setPaymentMethod] = useState("card");
 
   const shippingFee = 2500;
 
@@ -120,137 +125,26 @@ const CheckoutPage = () => {
           className="grid gap-8 lg:grid-cols-3"
         >
 
-          {/* DELIVERY INFORMATION */}
+          <DeliveryDetailsForm
+            shipping={shipping}
+            handleChange={handleChange}
+          />
 
-          <section className="rounded-2xl bg-white p-6 shadow-sm lg:col-span-2">
+          <PaymentSelector
+            paymentMethod={paymentMethod}
+            setPaymentMethod={setPaymentMethod}
+          />
 
-            <h2 className="mb-6 text-xl font-bold">
-              Delivery Information
-            </h2>
+          {paymentMethod === "card" && <DummyCardInput />}
 
-            <div className="grid gap-5 sm:grid-cols-2">
-
-              {[
-                {
-                  name: "fullName",
-                  label: "Full Name",
-                  type: "text",
-                },
-                {
-                  name: "email",
-                  label: "Email Address",
-                  type: "email",
-                },
-                {
-                  name: "phone",
-                  label: "Phone Number",
-                  type: "tel",
-                },
-                {
-                  name: "city",
-                  label: "City",
-                  type: "text",
-                },
-                {
-                  name: "state",
-                  label: "State",
-                  type: "text",
-                },
-              ].map((field) => (
-                <div key={field.name}>
-                  <label className="mb-2 block text-sm font-medium text-gray-700">
-                    {field.label}
-                  </label>
-
-                  <input
-                    type={field.type}
-                    name={field.name}
-                    value={shipping[field.name]}
-                    onChange={handleChange}
-                    required
-                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
-                  />
-                </div>
-              ))}
-
-              <div className="sm:col-span-2">
-                <label className="mb-2 block text-sm font-medium text-gray-700">
-                  Delivery Address
-                </label>
-
-                <textarea
-                  name="address"
-                  value={shipping.address}
-                  onChange={handleChange}
-                  required
-                  rows="4"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
-                  placeholder="Enter your complete delivery address"
-                />
-              </div>
-
-            </div>
-
-          </section>
-
-          {/* ORDER SUMMARY */}
-
-          <aside className="h-fit rounded-2xl bg-white p-6 shadow-sm">
-
-            <h2 className="mb-6 text-xl font-bold">
-              Order Summary
-            </h2>
-
-            <div className="space-y-5">
-              {cart.map((item) => (
-                <div
-                  key={`${item.vendorId}-${item.id}`}
-                  className="flex justify-between gap-4"
-                >
-                  <div>
-                    <h3 className="font-semibold text-gray-800">
-                      {item.name}
-                    </h3>
-
-                    <p className="text-sm text-gray-500">
-                      Quantity: {item.quantity}
-                    </p>
-                  </div>
-
-                  <p className="font-semibold">
-                    {formatPrice(item.price * item.quantity)}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-6 space-y-4 border-t pt-5">
-
-              <div className="flex justify-between text-gray-600">
-                <span>Subtotal</span>
-                <span>{formatPrice(subtotal)}</span>
-              </div>
-
-              <div className="flex justify-between text-gray-600">
-                <span>Shipping Fee</span>
-                <span>{formatPrice(shippingFee)}</span>
-              </div>
-
-              <div className="flex justify-between border-t pt-4 text-lg font-bold">
-                <span>Total</span>
-                <span>{formatPrice(total)}</span>
-              </div>
-
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="mt-7 w-full rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {loading ? "Processing..." : "Complete Order"}
-            </button>
-          </aside>
+          <OrderSummary
+            variant="checkout"
+            cart={cart}
+            subtotal={subtotal}
+            shippingFee={shippingFee}
+            total={total}
+            loading={loading}
+          />
 
         </form>
 

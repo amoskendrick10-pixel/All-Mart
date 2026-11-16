@@ -1,20 +1,14 @@
 "use client";
 
-import { ShoppingCartPlus, Heart } from "lucide-react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { ShoppingCartPlus } from "lucide-react";
+import Image from "next/image";
 
 import { formatPrice } from "@/constants/mockData";
 import { useCart } from "@/context/CartContext";
-import { useAuth } from "@/context/AuthContext";
-import Image from "next/image";
+import FavoriteButton from "@/components/FavoriteButton";
 
 const ProductCard = ({ product, vendor }) => {
   const { addToCart } = useCart();
-  const { user } = useAuth();
-  const router = useRouter();
-
-  const [saved, setSaved] = useState(false);
 
   const handleAddToCart = () => {
     addToCart({
@@ -24,38 +18,8 @@ const ProductCard = ({ product, vendor }) => {
     });
   };
 
-  const handleWishlist = () => {
-    if (!user) {
-      router.push("/signin");
-      return;
-    }
-
-    const wishlist = JSON.parse(
-      localStorage.getItem("allmart_wishlist") || "{}"
-    );
-
-    const userWishlist = wishlist[user.id] || [];
-
-    const exists = userWishlist.some(
-      (item) => item.id === product.id
-    );
-
-    const updatedWishlist = exists
-      ? userWishlist.filter((item) => item.id !== product.id)
-      : [...userWishlist, { ...product, vendor }];
-
-    wishlist[user.id] = updatedWishlist;
-
-    localStorage.setItem(
-      "allmart_wishlist",
-      JSON.stringify(wishlist)
-    );
-
-    setSaved(!exists);
-  };
-
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white py-2 px-2">
       <div className="relative">
         <Image
           width={600}
@@ -69,6 +33,11 @@ const ProductCard = ({ product, vendor }) => {
       </div>
 
       <div className="p-5">
+
+        <div className="relative">
+          <FavoriteButton product={product} />
+        </div>
+
         <p className="text-sm text-blue-600">
           {vendor?.name}
         </p>
@@ -85,30 +54,13 @@ const ProductCard = ({ product, vendor }) => {
           {product.description}
         </p>
 
-        <div className="flex flex-row justify-center items-center space-between">
-          <button
+        <button
           onClick={handleAddToCart}
-          className="mt-4 flex items-center justify-center w-full gap-2 rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700"
-          >
-            <ShoppingCartPlus size={18} />
-            Add to Cart
-          </button>
-
-          <button
-            onClick={handleWishlist}
-            className="flex items-end justify-end bg-gray-50 relative"
-            aria-label="Toggle wishlist"
-          >
-            <Heart
-              size={26}
-              className={
-                saved
-                  ? "fill-red-500 text-red-500"
-                  : "text-gray-500"
-              }
-            />
-          </button>
-        </div>
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700"
+        >
+          <ShoppingCartPlus size={18} />
+          Add to Cart
+        </button>
       </div>
     </div>
   );

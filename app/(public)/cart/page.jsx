@@ -1,17 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import {
-  ShoppingCart,
-  Plus,
-  Minus,
-  Trash2,
-  ArrowLeft,
-} from "lucide-react";
-
+import { ShoppingCart, ArrowLeft } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/constants/mockData";
-import Image from "next/image";
+import CartItem from "@/components/CartItem";
+import OrderSummary from "@/components/OrderSummary";
 
 const CartPage = () => {
   const {
@@ -67,106 +61,19 @@ const CartPage = () => {
 
         <div className="grid gap-8 lg:grid-cols-3">
 
-          {/* CART ITEMS */}
           <section className="space-y-5 lg:col-span-2">
             {cart.map((item) => (
-              <div
+              <CartItem
                 key={`${item.vendorId}-${item.id}`}
-                className="flex flex-col gap-5 rounded-2xl border bg-white p-5 sm:flex-row"
-              >
-                <Image
-                  width={600}
-                  height={600}
-                  src={item.image}
-                  alt={item.name}
-                  className="h-36 w-full rounded-xl object-cover sm:w-36"
-                />
-
-                <div className="flex flex-1 flex-col justify-between">
-                  <div>
-                    <p className="text-sm text-blue-600">
-                      {item.vendorName}
-                    </p>
-
-                    <h2 className="mt-1 text-lg font-bold text-gray-900">
-                      {item.name}
-                    </h2>
-
-                    <p className="mt-2 font-semibold text-gray-800">
-                      {formatPrice(item.price)}
-                    </p>
-                  </div>
-
-                  <div className="mt-5 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <button
-                        onClick={() => decreaseQuantity(item.id)}
-                        className="rounded-lg border p-2 hover:bg-gray-100"
-                        aria-label="Decrease quantity"
-                      >
-                        <Minus size={16} />
-                      </button>
-
-                      <span className="font-semibold">
-                        {item.quantity}
-                      </span>
-
-                      <button
-                        onClick={() => increaseQuantity(item.id)}
-                        className="rounded-lg border p-2 hover:bg-gray-100"
-                        aria-label="Increase quantity"
-                      >
-                        <Plus size={16} />
-                      </button>
-                    </div>
-
-                    <button
-                      onClick={() => removeFromCart(item.id)}
-                      className="flex items-center gap-2 text-red-500 hover:text-red-700"
-                    >
-                      <Trash2 size={18} />
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              </div>
+                item={item}
+                onIncrease={() => increaseQuantity(item.id)}
+                onDecrease={() => decreaseQuantity(item.id)}
+                onRemove={() => removeFromCart(item.id)}
+              />
             ))}
           </section>
 
-          {/* ORDER SUMMARY */}
-          <aside className="h-fit rounded-2xl border bg-white p-6 shadow-sm">
-            <h2 className="text-xl font-bold text-gray-900">
-              Order Summary
-            </h2>
-
-            <div className="mt-6 flex justify-between text-gray-600">
-              <span>Subtotal</span>
-              <span>{formatPrice(subtotal)}</span>
-            </div>
-
-            <div className="mt-4 flex justify-between text-gray-600">
-              <span>Shipping</span>
-              <span>Calculated at checkout</span>
-            </div>
-
-            <div className="mt-6 border-t pt-5">
-              <div className="flex justify-between text-lg font-bold">
-                <span>Total</span>
-                <span>{formatPrice(subtotal)}</span>
-              </div>
-            </div>
-
-            <Link
-              href="/checkout"
-              className="mt-6 block rounded-lg bg-blue-600 py-3 text-center font-semibold text-white hover:bg-blue-700"
-            >
-              Proceed to Checkout
-            </Link>
-
-            <p className="mt-4 text-center text-xs text-gray-500">
-              Shipping costs will be added at checkout.
-            </p>
-          </aside>
+          <OrderSummary subtotal={subtotal} />
 
         </div>
       </div>
