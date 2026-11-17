@@ -7,7 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 import { formatPrice } from "@/constants/mockData";
 import { Package, ArrowLeft } from "lucide-react";
 import TrackingStepper from "@/components/TrackingStepper";
-  
+
 const statuses = ["Processing", "Shipped", "Delivered"];
 
 const TrackingPage = () => {
@@ -18,6 +18,7 @@ const TrackingPage = () => {
 
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     if (!user) return;
@@ -34,10 +35,53 @@ const TrackingPage = () => {
     setLoading(false);
   }, [orderId, user]);
 
+
+  useEffect(() => {
+    if (!order) return;
+
+    const currentIndex = statuses.indexOf(order.status);
+
+
+    if (currentIndex === -1 || currentIndex >= statuses.length - 1) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      const nextStatus = statuses[currentIndex + 1];
+
+      const updatedOrder = {
+        ...order,
+        status: nextStatus,
+      };
+
+
+      setOrder(updatedOrder);
+
+ 
+      const orders = JSON.parse(
+        localStorage.getItem("allmart_orders") || "[]"
+      );
+
+      const updatedOrders = orders.map((item) =>
+        item.id === order.id && item.userId === user.id
+          ? updatedOrder
+          : item
+      );
+
+      localStorage.setItem(
+        "allmart_orders",
+        JSON.stringify(updatedOrders)
+      );
+    }, 5000);
+
+
+    return () => clearTimeout(timer);
+  }, [order, user]);
+
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center">
-        <p className="text-gray-500">Loading order details...</p>
+      <main>
+        <p>Loading order details...</p>
       </main>
     );
   }
@@ -99,7 +143,7 @@ const TrackingPage = () => {
             statuses={statuses}
             currentStatus={currentStatus}
           />
-          {/* ORDER DETAILS */}
+
 
           <section className="mt-10 border-t pt-8">
             <h2 className="mb-5 text-lg font-bold">

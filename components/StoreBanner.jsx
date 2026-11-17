@@ -7,7 +7,7 @@ const StoreBanner = ({ vendor }) => {
     <section className="bg-gray-900 px-6 py-16 text-white">
       <div className="mx-auto grid max-w-7xl items-center gap-10 md:grid-cols-2">
 
-        {/* Vendor Information */}
+
         <div>
           <Link
             href="/"
@@ -28,7 +28,7 @@ const StoreBanner = ({ vendor }) => {
             {vendor.description}
           </p>
 
-          {/* Vendor Rating */}
+
           <div className="mt-6 flex items-center gap-2">
             <Star
               size={20}
@@ -45,7 +45,7 @@ const StoreBanner = ({ vendor }) => {
           </div>
         </div>
 
-        {/* Vendor Image */}
+
         <div className="relative h-64 overflow-hidden rounded-2xl">
           <Image
             src={vendor.image}

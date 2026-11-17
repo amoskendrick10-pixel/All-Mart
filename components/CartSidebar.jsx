@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link";
-import { X, ShoppingBag } from "lucide-react";
+import { X,} from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/constants/mockData";
 import CartItem from "./CartItem";

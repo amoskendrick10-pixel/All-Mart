@@ -56,7 +56,7 @@ const CheckoutPage = () => {
 
     setLoading(true);
 
-    // Simulated payment
+
     setTimeout(() => {
       const order = {
         id: `ORD-${Date.now()}`,

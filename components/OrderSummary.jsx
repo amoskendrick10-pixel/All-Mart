@@ -9,7 +9,7 @@ const OrderSummary = ({
   loading = false,
   variant = "cart",
 }) => {
-  // CART PAGE VERSION
+
   if (variant === "cart") {
     return (
       <aside className="h-fit rounded-2xl border bg-white p-6 shadow-sm">
@@ -48,7 +48,7 @@ const OrderSummary = ({
     );
   }
 
-  // CHECKOUT PAGE VERSION
+
   return (
     <aside className="h-fit rounded-2xl bg-white p-6 shadow-sm">
       <h2 className="mb-6 text-xl font-bold">
