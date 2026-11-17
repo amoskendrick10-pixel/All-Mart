@@ -101,7 +101,7 @@ const Footer = () => {
 
         <div className="mt-10 border-t border-gray-800 pt-6">
           <p className="text-center text-sm text-gray-500">
-            © 2026 AllMart. All rights reserved.
+            &copy;2026 AllMart. All rights reserved.
           </p>
         </div>
 

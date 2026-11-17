@@ -6,7 +6,7 @@ const VendorCard = ({ vendor }) => {
   return (
     <Link
       href={`/store/${vendor.id}`}
-      className="group overflow-hidden rounded-xl border border-gray-200 bg-white"
+      className="py-2 px-3 overflow-hidden rounded-xl border border-gray-200 bg-white"
     >
 
       <div className="relative h-48 w-full overflow-hidden">
